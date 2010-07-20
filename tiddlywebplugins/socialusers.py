@@ -92,8 +92,10 @@ def put_user(environ, start_response):
 
     try:
         user_info = simplejson.loads(content)
-    except ValueError, exc:
-        raise HTTP400('Invalid JSON, %s' % exc)
+        old_password = user_info['old_password']
+        new_password = user_info['password']
+    except (ValueError, KeyError), exc:
+        raise HTTP400('Invalid input, %s' % exc)
 
     try:
         user = User(target_user)
@@ -101,7 +103,10 @@ def put_user(environ, start_response):
             store.get(user)
         except NoUserError:
             raise HTTP404()
-        user.set_password(user_info['password'])
+        if user.check_password(old_password):
+            user.set_password(new_password)
+        else:
+            raise HTTP400('Old password incorrect')
     except KeyError, exc:
         raise HTTP400('Missing required data: %s', exc)
 
