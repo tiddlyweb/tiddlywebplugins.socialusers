@@ -2,7 +2,7 @@ AUTHOR = 'Chris Dent'
 AUTHOR_EMAIL = 'cdent@peermore.com'
 NAME = 'tiddlywebplugins.socialusers'
 DESCRIPTION = 'An HTTP way of accessing and creating TiddlyWeb users.'
-VERSION = '0.5' # also update socialusers.py
+VERSION = '0.6' # also update socialusers.py
 
 
 import os

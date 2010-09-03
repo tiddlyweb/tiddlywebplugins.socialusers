@@ -12,7 +12,7 @@ tiddlywebplugins.magicuser extractor, which uses
 additional user data stored in tiddlers.
 """
 
-__version__ = '0.5'
+__version__ = '0.6'
 
 import simplejson
 import urllib
@@ -105,7 +105,7 @@ def put_user(environ, start_response):
     try:
         user = User(target_user)
         try:
-            store.get(user)
+            user = store.get(user)
         except NoUserError:
             raise HTTP404()
         if user.check_password(old_password):
@@ -152,7 +152,7 @@ def post_user(environ, start_response):
     try:
         user = User(user_info['username'])
         try:
-            store.get(user)
+            user = store.get(user)
             raise HTTP409('User exists')
         except NoUserError:
             pass # we're carrying on below
