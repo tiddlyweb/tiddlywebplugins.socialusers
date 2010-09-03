@@ -12,6 +12,8 @@ tiddlywebplugins.magicuser extractor, which uses
 additional user data stored in tiddlers.
 """
 
+__version__ = '0.5'
+
 import simplejson
 import urllib
 
@@ -84,11 +86,14 @@ def put_user(environ, start_response):
             current_user['name'] == target_user):
         raise HTTP403('Incorrect User')
 
-    content_type = environ['tiddlyweb.type']
-    length = environ['CONTENT_LENGTH']
-    if content_type != 'application/json':
-        raise HTTP415('application/json required')
-    content = environ['wsgi.input'].read(int(length))
+    try:
+        content_type = environ['tiddlyweb.type']
+        length = environ['CONTENT_LENGTH']
+        if content_type != 'application/json':
+            raise HTTP415('application/json required')
+        content = environ['wsgi.input'].read(int(length))
+    except KeyError, exc:
+        raise HTTP400('Missing content-type or content-length headers: %s' % exc)
 
     try:
         user_info = simplejson.loads(content)
@@ -128,12 +133,15 @@ def post_user(environ, start_response):
     to be used with the tiddlywebplugins.magicuser
     extractor.
     """
-    content_type = environ['tiddlyweb.type']
-    if content_type != 'application/json':
-        raise HTTP415('application/json required')
-    length = environ['CONTENT_LENGTH']
-    content = environ['wsgi.input'].read(int(length))
-    store = environ['tiddlyweb.store']
+    try:
+        content_type = environ['tiddlyweb.type']
+        if content_type != 'application/json':
+            raise HTTP415('application/json required')
+        length = environ['CONTENT_LENGTH']
+        content = environ['wsgi.input'].read(int(length))
+        store = environ['tiddlyweb.store']
+    except KeyError, exc:
+        raise HTTP400('Missing content-type or content-length headers: %s' % exc)
 
     try:
         user_info = simplejson.loads(content)

@@ -1,3 +1,11 @@
+# Missing headers
+- name: Missing header on create
+  desc: POST to create a user
+  url: /users
+  method: POST
+  data: '{"username": "cdent", "password": "cowpig"}'
+  status: 400
+
 # Create a user
 - name: Create one user
   desc: POST to create a user
@@ -69,6 +77,16 @@
   expected:
   - cdent
   url: /users/cdent
+
+# Missing header on put
+- name: Missing header on put
+  desc: Set a user password
+  url: /users/cdent
+  request_headers:
+    authorization: Basic Y2RlbnQ6Y293cGln
+  method: PUT
+  data: '{"password": "newpass"}'
+  status: 400
 
 # Put a user's new password
 - name: Put a user password fail no old_password
