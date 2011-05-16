@@ -25,6 +25,9 @@ from tiddlywebplugins.utils import require_any_user
 
 
 def init(config):
+    """
+    Add /users handlers to selector.
+    """
     if 'selector' in config:
         config['selector'].add('/users', GET=list_users, POST=post_user)
         config['selector'].add('/users/{usersign}', GET=get_user, PUT=put_user)
@@ -93,7 +96,8 @@ def put_user(environ, start_response):
             raise HTTP415('application/json required')
         content = environ['wsgi.input'].read(int(length))
     except KeyError, exc:
-        raise HTTP400('Missing content-type or content-length headers: %s' % exc)
+        raise HTTP400('Missing content-type or content-length headers: %s'
+                % exc)
 
     try:
         user_info = simplejson.loads(content)
@@ -117,8 +121,7 @@ def put_user(environ, start_response):
 
     store.put(user)
     start_response('204 No Content', [
-        ('Content-Type', 'text/html; charset=UTF-8')
-        ])
+        ('Content-Type', 'text/html; charset=UTF-8')])
     return ['Updated %s' % target_user]
 
 
@@ -141,7 +144,8 @@ def post_user(environ, start_response):
         content = environ['wsgi.input'].read(int(length))
         store = environ['tiddlyweb.store']
     except KeyError, exc:
-        raise HTTP400('Missing content-type or content-length headers: %s' % exc)
+        raise HTTP400('Missing content-type or content-length headers: %s'
+                % exc)
 
     try:
         user_info = simplejson.loads(content)
@@ -155,7 +159,7 @@ def post_user(environ, start_response):
             user = store.get(user)
             raise HTTP409('User exists')
         except NoUserError:
-            pass # we're carrying on below
+            pass  # we're carrying on below
         user.set_password(user_info['password'])
     except KeyError, exc:
         raise HTTP400('Missing required data: %s' % exc)
@@ -163,12 +167,14 @@ def post_user(environ, start_response):
     store.put(user)
 
     start_response('201 Created', [
-        ('Content-Type', 'text/html; charset=UTF-8')
-        ])
+        ('Content-Type', 'text/html; charset=UTF-8')])
     return ['Created %s' % user_info['username']]
 
 
 def _validate_user(environ, user_info):
+    """
+    Ensure username is not reserved (for future use).
+    """
     reserved_user_names = environ['tiddlyweb.config'].get(
             'socialusers.reserved_names', [])
     if user_info['username'] in reserved_user_names:
