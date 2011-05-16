@@ -12,7 +12,7 @@ tiddlywebplugins.magicuser extractor, which uses
 additional user data stored in tiddlers.
 """
 
-__version__ = '0.6'
+__version__ = '0.7'
 
 import simplejson
 import urllib
