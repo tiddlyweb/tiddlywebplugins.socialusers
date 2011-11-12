@@ -25,5 +25,6 @@ setup(
         'tiddlywebplugins.utils',
         'simplejson',
         'tiddlyweb>=1.2.0'],
-    zip_safe = False
+    zip_safe = False,
+    license = 'BSD'
     )

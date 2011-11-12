@@ -6,10 +6,13 @@ any existing user can list all the users. This is
 extremely insecure for some settings, and perfectly
 okay for others. You need to be the judge.
 
-This module provides very functionality which
+This module provides very limited functionality which
 will expand to optionally interoperate with the
 tiddlywebplugins.magicuser extractor, which uses
 additional user data stored in tiddlers.
+
+Install by adding tiddlywebplugins.socialusers to
+system_plugins in tiddlywebconfig.py.
 """
 
 __version__ = '0.7'
