@@ -15,7 +15,7 @@ Install by adding tiddlywebplugins.socialusers to
 system_plugins in tiddlywebconfig.py.
 """
 
-__version__ = '0.7'
+__version__ = '0.8'
 
 import simplejson
 import urllib
