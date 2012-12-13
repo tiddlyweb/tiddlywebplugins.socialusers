@@ -15,12 +15,13 @@ Install by adding tiddlywebplugins.socialusers to
 system_plugins in tiddlywebconfig.py.
 """
 
-__version__ = '0.8'
+__version__ = '0.9'
 
 import simplejson
 import urllib
 
-from tiddlyweb.web.http import HTTP404, HTTP415, HTTP400, HTTP409, HTTP403
+from httpexceptor import HTTP404, HTTP415, HTTP400, HTTP409, HTTP403
+
 from tiddlyweb.model.user import User
 from tiddlyweb.store import NoUserError
 
